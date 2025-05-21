@@ -68,7 +68,7 @@ public class Boule extends Objet implements Global, Runnable {
 		this.attaquant.affiche(MARCHE, 1);
 		// rendre la boule visible
 		super.jLabel.setVisible(true);
-		// préparer la victime (dans le cas où un joueur est tuché)
+		// préparer la victime (dans le cas où un oueur est tuché)
 		Joueur victime = null;
 		attaquant.perteBoules();
 		// pas positif ou négatif (suivant l'orientation du joueur) pour faire avancer la boule
