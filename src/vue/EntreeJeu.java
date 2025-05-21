@@ -1,41 +1,46 @@
 package vue;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JTextField;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import controleur.Controle;
 
 public class EntreeJeu extends JFrame {
 
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField textIP;
-	
-	private void btnStart_clic() {
-		(new Arene()).setVisible(true);;
-		this.dispose();
-	}
+	private JTextField txtIp;
+	private Controle controle;
 
+	/**
+	 * Start pour lancer le serveur
+	 */
+	private void btnStart_clic() {
+		this.controle.evenementEntreeJeu("serveur");
+	}
+	
+	/**
+	 * Exit pour arrêter l'application
+	 */
 	private void btnExit_clic() {
 		System.exit(0);
 	}
-
+	
+	/**
+	 * Se connecter à un serveur
+	 */
 	private void btnConnect_clic() {
-		(new ChoixJoueur()).setVisible(true);
-		this.dispose();
+		this.controle.evenementEntreeJeu(this.txtIp.getText());
 	}
+
 	/**
 	 * Create the frame.
 	 */
-	public EntreeJeu() {
+	public EntreeJeu(Controle controle) {
 		setResizable(false);
 		setTitle("Urban Marginal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,8 +54,9 @@ public class EntreeJeu extends JFrame {
 		contentPane.add(lblStartAServer);
 		
 		JButton btnStart = new JButton("Start");
-		btnStart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnStart.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
 				btnStart_clic();
 			}
 		});
@@ -66,27 +72,32 @@ public class EntreeJeu extends JFrame {
 		contentPane.add(lblIpServer);
 		
 		JButton btnConnect = new JButton("Connect");
-		btnConnect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnConnect.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				btnConnect_clic() ;
 			}
 		});
 		btnConnect.setBounds(186, 57, 89, 23);
 		contentPane.add(btnConnect);
 		
-		textIP = new JTextField();
-		textIP.setText("127.0.0.1");
-		textIP.setBounds(69, 58, 107, 20);
-		contentPane.add(textIP);
-		textIP.setColumns(10);
+		txtIp = new JTextField();
+		txtIp.setText("127.0.0.1");
+		txtIp.setBounds(69, 58, 107, 20);
+		contentPane.add(txtIp);
+		txtIp.setColumns(10);
 		
 		JButton btnExit = new JButton("Exit");
-		btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnExit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				btnExit_clic();
 			}
 		});
 		btnExit.setBounds(186, 91, 89, 23);
 		contentPane.add(btnExit);
+		
+		this.controle = controle;
 	}
+
 }
