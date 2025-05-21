@@ -191,7 +191,7 @@ public class Joueur extends Objet implements Global {
 			int lepas, // valeur du déplacement (positif ou négatif)
 			int max, // valeur à ne pas dépasser
 			Collection lesJoueurs, // les autres joueurs (pour éviter les collisions)
-			Collection lesMurs) { // les murs (pour éviter les collisions)
+			Collection lesMurs) { // les murs (pour éviter les collisions
 		int ancpos = position ;
 		position += lepas ;
 	    if (position > max) {

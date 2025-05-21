@@ -143,7 +143,7 @@ public interface Global {
 	 */
 	String PSEUDO = "pseudo";
 	/**
-	 * vie de départ pour tous les joueurs
+	 * vie de départ pour tousles joueurs
 	 */
 	int MAXVIE = 10 ;
 	/**
