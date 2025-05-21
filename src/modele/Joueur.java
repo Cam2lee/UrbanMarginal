@@ -186,8 +186,11 @@ public class Joueur extends Objet implements Global {
 			Collection lesMurs) { // les murs (pour éviter les collisions)
 		int ancpos = position ;
 		position += lepas ;
-		position = Math.max(position, 0) ;
-		position = Math.min(position,  max) ;
+	    if (position > max) {
+	        position = 0;
+	    } else if (position < 0) {
+	        position = max;
+	    }
 		if (action==KeyEvent.VK_LEFT || action==KeyEvent.VK_RIGHT) {
 			posX = position ;
 		}else{
