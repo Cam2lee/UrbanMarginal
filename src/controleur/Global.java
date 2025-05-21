@@ -147,9 +147,19 @@ public interface Global {
 	 */
 	int MAXVIE = 10 ;
 	/**
+	 * vie de départ pour tous les joueurs
+	 */
+	int MAXBOULE = 10 ;
+	/**
+	 * gain de points de vie lors d'une attaque
+	 */
+	int BOULESGAIN = 2 ;
+	/**
 	 * gain de points de vie lors d'une attaque
 	 */
 	int GAIN = 1 ; 
+	
+	int BOULESPERTE = 1;
 	/**
 	 * perte de points de vie lors d'une attaque
 	 */

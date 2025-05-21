@@ -70,6 +70,7 @@ public class Boule extends Objet implements Global, Runnable {
 		super.jLabel.setVisible(true);
 		// préparer la victime (dans le cas où un joueur est touché)
 		Joueur victime = null;
+		attaquant.perteBoules();
 		// pas positif ou négatif (suivant l'orientation du joueur) pour faire avancer la boule
 		int lePas;
 		if (attaquant.getOrientation() == GAUCHE) {
@@ -96,6 +97,8 @@ public class Boule extends Objet implements Global, Runnable {
 			// gestion du gain et de la perte de vie
 			victime.perteVie();
 			attaquant.gainVie();
+			// gestion du gain de boules
+			attaquant.gainBoules();
 			// joue l'animation de la victime blessée
 			for(int k=1 ; k<=NBETAPESTOUCHE ; k++) {
 				victime.affiche(TOUCHE, k);
@@ -103,6 +106,7 @@ public class Boule extends Objet implements Global, Runnable {
 			}
 			// contrôle si la victime est morte
 			if(victime.estMort()) {
+				attaquant.gainBoules();
 				// envoi du son DEATH
 				this.jeuServeur.envoi(DEATH);
 				// joue l'animation de la mort

@@ -49,6 +49,11 @@ public class Joueur extends Objet implements Global {
 	 * tourné vers la gauche (0) ou vers la droite (1)
 	 */
 	private int orientation ;
+    /**
+     * Nombre de boules restantes
+     */
+	private int nbBoules;  // initialisé à 10 au départ
+	
 	
 	/**
 	 * Constructeur : récupératon de jeuServeur et initialisaton de certaines propriétés
@@ -57,6 +62,7 @@ public class Joueur extends Objet implements Global {
 	public Joueur(JeuServeur jeuServeur) {
 		this.jeuServeur = jeuServeur;
 		this.vie = MAXVIE;
+		this.nbBoules = MAXBOULE;
 		this.etape = 1;
 		this.orientation = DROITE;
 	}
@@ -85,6 +91,7 @@ public class Joueur extends Objet implements Global {
 	public void initPerso(String pseudo, int numPerso, Collection lesJoueurs, Collection lesMurs) {
 		this.pseudo = pseudo;
 		this.numPerso = numPerso;
+		this.nbBoules = 10;
 		System.out.println("joueur "+pseudo+" - num perso "+numPerso+" créé");
 		// création du label du personnage
 		super.jLabel = new JLabel();
@@ -129,8 +136,8 @@ public class Joueur extends Objet implements Global {
 		URL resource = getClass().getClassLoader().getResource(chemin);
 		super.jLabel.setIcon(new ImageIcon(resource));
 		// positionnement et remplissage du message sous le perosnnage
-		this.message.setBounds(posX-10, posY+HAUTEURPERSO, LARGEURPERSO+10, HAUTEURMESSAGE);
-		this.message.setText(pseudo+" : "+vie);
+		this.message.setBounds(posX-10, posY+HAUTEURPERSO, LARGEURPERSO+20, HAUTEURMESSAGE);
+		this.message.setText(pseudo+" | "+ vie + " | " + nbBoules);
 		// demande d'envoi à tous des modifications d'affichage
 		this.jeuServeur.envoiJeuATous();
 	}
@@ -159,10 +166,11 @@ public class Joueur extends Objet implements Global {
 				posY = deplace(posY,  action, PAS, HAUTEURARENE - HAUTEURPERSO - HAUTEURMESSAGE, lesJoueurs, lesMurs) ;
 				break;	
 			case KeyEvent.VK_SPACE :
-				if(!this.boule.getjLabel().isVisible()) {
+				if(!this.boule.getjLabel().isVisible() && nbBoules > 0) {
 					this.boule.tireBoule(this, lesMurs);
 				}
 				break;
+				
 			}
 			this.affiche(MARCHE, this.etape);
 		}
@@ -205,6 +213,20 @@ public class Joueur extends Objet implements Global {
 		return position ;
 	}
 
+    /**
+     * Le joueur gagne des boules (par exemple +2 à chaque touche, +2 supplémentaires à la mort)
+     * @param nb nombre de boules gagnées
+     */
+	public void gainBoules() {
+		this.nbBoules += BOULESGAIN;
+		affiche(MARCHE, etape);
+	}
+    
+    public void perteBoules() {
+    	this.nbBoules = Math.max(0, this.nbBoules - BOULESPERTE);
+		affiche(MARCHE, etape);
+    }
+    
 	/**
 	 * Gain de points de vie après avoir touché un joueur
 	 */
