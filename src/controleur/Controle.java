@@ -1,38 +1,44 @@
 package controleur;
 
-import vue.EntreeJeu;
 import outils.connexion.AsyncResponse;
 import outils.connexion.ClientSocket;
 import outils.connexion.Connection;
 import outils.connexion.ServeurSocket;
 import vue.Arene;
 import vue.ChoixJoueur;
+import vue.EntreeJeu;
 
+/**
+ * Contrôleur et point d'entrée de l'applicaton 
+ * @author emds
+ *
+ */
 public class Controle implements AsyncResponse {
-	
+
 	/**
-	 * Port du serveur
+	 * N° du port d'écoute du serveur
 	 */
 	private static final int PORT = 6666;
 	/**
-	 * EntreeJeu
+	 * frame EntreeJeu
 	 */
 	private EntreeJeu frmEntreeJeu ;
 	/**
-	 * Arene
+	 * frame Arene
 	 */
 	private Arene frmArene;
 	/**
-	 * ChoixJoueur
+	 * frame ChoixJoueur
 	 */
 	private ChoixJoueur frmChoixJoueur;
-	/*
-	 * Type du jeu
+	/**
+	 * type du jeu : client ou serveur
 	 */
 	private String typeJeu;
 
 	/**
 	 * Méthode de démarrage
+	 * @param args non utilisé
 	 */
 	public static void main(String[] args) {
 		new Controle();
@@ -46,6 +52,10 @@ public class Controle implements AsyncResponse {
 		this.frmEntreeJeu.setVisible(true);
 	}
 	
+	/**
+	 * Demande provenant de la vue EntreeJeu
+	 * @param info information à traiter
+	 */
 	public void evenementEntreeJeu(String info) {
 		if(info.equals("serveur")) {
 			this.typeJeu = "serveur";
@@ -57,16 +67,26 @@ public class Controle implements AsyncResponse {
 			this.typeJeu = "client";
 			new ClientSocket(this, info, PORT);
 		}
-		
+	}
+	
+	/**
+	 * Informations provenant de la vue ChoixJoueur
+	 * @param pseudo le pseudo du joueur
+	 * @param numPerso le numéro du personnage choisi par le joueur
+	 */
+	public void evenementChoixJoueur(String pseudo, int numPerso) {
+		this.frmChoixJoueur.dispose();
+		this.frmArene.setVisible(true);
 	}
 
+	@Override
 	public void reception(Connection connection, String ordre, Object info) {
 		switch(ordre) {
 		case "connexion" :
 			if(this.typeJeu.equals("client")) {
 				this.frmEntreeJeu.dispose();
 				this.frmArene = new Arene();
-				this.frmChoixJoueur = new ChoixJoueur();
+				this.frmChoixJoueur = new ChoixJoueur(this);
 				this.frmChoixJoueur.setVisible(true);
 			}
 			break;
@@ -77,4 +97,5 @@ public class Controle implements AsyncResponse {
 		}
 		
 	}
+
 }
